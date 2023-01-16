@@ -1,0 +1,25 @@
+1. To resolve consumer deserialization issues
+   - created own deserializer
+      - Can you use Jsondeserializer only? YES YOU CAN
+        there are 2 ways
+        1. put these in consumer properties
+               configurations.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+                configurations.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false);
+                configurations.put(JsonDeserializer.VALUE_DEFAULT_TYPE, TicketEvent.class);
+                  https://www.stackchief.com/questions/Does%20anyone%20have%20issues%20with%20JSON%20Serializer%20in%20Kafka%3F
+                  https://stackoverflow.com/questions/55109508/spring-kafka-no-type-information-in-headers-and-no-default-type-provided
+                  ValueDefaultType is important
+        2. or set it as consumer factory
+             JsonDeserializer<TicketEvent> ticketEventJsonDeserializer = new JsonDeserializer<>(TicketEvent.class, false);
+              ticketEventJsonDeserializer.addTrustedPackages("*");
+           return new DefaultKafkaConsumerFactory<>(consumerConfigurations(), new StringDeserializer(), ticketEventJsonDeserializer);
+   - added trusted packages as *
+      - adding trusted package as ticketservice (WORKS)
+      - adding trusted package as routingservice
+   - created a similar package like the producer (com.example.ticketservice)
+   - https://stackoverflow.com/questions/71480745/spring-boot-kafka-send-objects-between-different-microservices
+   - Had to also add empty constructor in TicketEvent
+   - Added JsonProperty
+      - //@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+       - is needed otherwise everything comes as null
+   - had to also help in deserializing enum (You don't need @JsonFormat(shape = JsonFormat.Shape.OBJECT) on top of the enum)

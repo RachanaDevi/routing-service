@@ -1,0 +1,21 @@
+Curl command to create ticket
+curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": "1234","concern": "Washing machine not working properly","date" : "2022-01-01"}'
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-service-topic --from-beginning
+
+psql -U postgres
+
+\c postgres
+
+\l list databases
+
+\dt - list database tables
+
+\d describe a table
+
+\d+ describe a table more
+
+
+TODO:
+1. Link the database and the queries all and for once
+2. See if it is able to get the table
