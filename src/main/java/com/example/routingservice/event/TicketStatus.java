@@ -1,4 +1,4 @@
-package com.example.routingservice.model;
+package com.example.routingservice.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

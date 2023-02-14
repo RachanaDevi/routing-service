@@ -1,6 +1,6 @@
 package com.example.routingservice.consumer;
 
-import com.example.routingservice.model.TicketEvent;
+import com.example.routingservice.event.TicketCreated;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
@@ -20,17 +20,17 @@ import static com.example.routingservice.constants.KafkaConfigConstants.TICKET_E
 
 @EnableKafka
 @Configuration
-public class TicketEventConsumerConfig {
+public class TicketConsumerConfig {
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, TicketEvent> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, TicketEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, TicketCreated> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, TicketCreated> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
 
     @Bean
-    public ConsumerFactory<String, TicketEvent> consumerFactory() {
+    public ConsumerFactory<String, TicketCreated> consumerFactory() {
 //        JsonDeserializer<TicketEvent> ticketEventJsonDeserializer = new JsonDeserializer<>(TicketEvent.class, false);
 //        ticketEventJsonDeserializer.addTrustedPackages("*");
 //        return new DefaultKafkaConsumerFactory<>(consumerConfigurations(), new StringDeserializer(), ticketEventJsonDeserializer);
@@ -47,7 +47,7 @@ public class TicketEventConsumerConfig {
         configurations.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         configurations.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         configurations.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false);
-        configurations.put(JsonDeserializer.VALUE_DEFAULT_TYPE, TicketEvent.class);
+        configurations.put(JsonDeserializer.VALUE_DEFAULT_TYPE, TicketCreated.class);
 
         configurations.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         configurations.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class);
