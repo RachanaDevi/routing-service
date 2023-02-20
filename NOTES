@@ -23,3 +23,5 @@ TODO:
 4. See where all databases have to be
 5. Difference between date of ticket and availability date for customer as well (to be implemented later)
 6. Change structure for the consultant date
+7. Do we require to return a list of Consultants in the first place or is one consultant fine
+8. When a consultant becomes free later, ie a ticket was cancelled
