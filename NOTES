@@ -15,6 +15,7 @@ psql -U postgres
 
 \d+ describe a table more
 
+curl -X GET http://localhost:8082/checkingJpa
 
 TODO:
 1. Link the database and the queries all and for once
@@ -25,3 +26,4 @@ TODO:
 6. Change structure for the consultant date
 7. Do we require to return a list of Consultants in the first place or is one consultant fine
 8. When a consultant becomes free later, ie a ticket was cancelled
+9. Revisit ticket and see if we want to pass on created status
