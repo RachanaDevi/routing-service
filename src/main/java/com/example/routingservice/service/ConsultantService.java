@@ -24,9 +24,9 @@ public class ConsultantService {
 
 
     public List<Consultant> findAvailableConsultants(String date) {
-   consultantAvailabilityRepository.findAvailableConsultants(Timestamp.valueOf(date));
+        List<Consultant> availableConsultants = consultantAvailabilityRepository.findAvailableConsultants(Timestamp.valueOf(date));
 //                findAvailableConsultants(Timestamp.valueOf(date));
-//        System.out.println(availableConsultants);
+        System.out.println(availableConsultants);
 
         List<Consultant> allAvailableConsultants = new ArrayList<>();
 //        availableConsultants.forEach(consultant -> {

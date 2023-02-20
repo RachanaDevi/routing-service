@@ -30,6 +30,6 @@ public class RoutingService {
 // you have customerId -> from this you will get place
         // ticket created date -> consultant availability date
         // and also a consultant from that place
-        return availableConsultants.get(0);
+        return null;
     }
 }

@@ -10,9 +10,9 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
-public interface ConsultantAvailabilityRepository extends JpaRepository<ConsultantAvailability, Long> {
+public interface ConsultantAvailabilityRepository extends JpaRepository<Consultant, Long> {
 
-    //    @Query(value = "select c.id, c.name, c.specialization, c.place from consultants_availability inner join consultants c on consultant_id=c.id where :date >=available_from and :date <=available_to and available=true")
-    @Query(value = "From ConsultantAvailability.availableConsultants where :date<=ConsultantAvailability.availableConsultants")
-    List<ConsultantAvailability> findAvailableConsultants(Timestamp date);
+    @Query(value = "select c.* from consultants_availability ca inner join consultants c on ca.consultant_id=c.id where ca.available=true", nativeQuery = true)
+//    @Query(value = "From ConsultantAvailability.availableConsultants where :date<=ConsultantAvailability.availableConsultants")
+    List<Consultant> findAvailableConsultants(Timestamp date);
 }
