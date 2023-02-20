@@ -1,11 +1,7 @@
 package com.example.routingservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "consultants")
@@ -21,14 +17,6 @@ public class Consultant {
     private String specialization;
 
     private String place;
-
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "consultants_availability",
-            joinColumns = @JoinColumn(name = "consultant_id"),
-            inverseJoinColumns = @JoinColumn(name = "id")
-    )
-    private List<ConsultantAvailability> availableConsultants = new ArrayList<>();
 
     public Consultant() {
     }

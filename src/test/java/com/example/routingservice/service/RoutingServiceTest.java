@@ -1,7 +1,6 @@
 package com.example.routingservice.service;
 
 import com.example.routingservice.entity.Consultant;
-import com.example.routingservice.entity.ConsultantAvailability;
 import model.Ticket;
 import org.junit.jupiter.api.Test;
 

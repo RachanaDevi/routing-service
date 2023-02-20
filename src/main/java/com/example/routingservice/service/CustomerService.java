@@ -1,6 +1,5 @@
 package com.example.routingservice.service;
 
-import com.example.routingservice.entity.ConsultantAvailability;
 import com.example.routingservice.entity.Customer;
 import com.example.routingservice.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
