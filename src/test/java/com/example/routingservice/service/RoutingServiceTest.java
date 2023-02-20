@@ -18,7 +18,7 @@ class RoutingServiceTest {
     }
 
     private Ticket anyTicket() {
-        return new Ticket("anyCustomerId", "Washing machine", "2022-01-02");
+        return new Ticket(1L, "Washing machine", "2022-01-02");
     }
 
     private Consultant anyConsultant() {

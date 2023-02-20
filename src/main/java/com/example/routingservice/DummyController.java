@@ -20,7 +20,7 @@ public class DummyController {
     @ResponseBody
     public ResponseEntity<Consultant> conAvailability() {
         // see how to fix the timestamp problem
-        Consultant consultant = routingService.assignedConsultant(new Ticket("1","NOTHING", "2023-02-18 01:24:00"));
+        Consultant consultant = routingService.assignedConsultant(new Ticket(1L,"Washing machine", "2023-02-18 01:24:00"));
        return ResponseEntity.ok(consultant);
     }
 }

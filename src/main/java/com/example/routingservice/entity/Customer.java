@@ -23,4 +23,17 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
+    public String place() {
+        return place;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", place='" + place + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
 }

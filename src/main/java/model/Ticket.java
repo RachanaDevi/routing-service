@@ -7,14 +7,14 @@ import java.util.Objects;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Ticket {
 
-    private String customerId;
+    private Long customerId;
     private String concern;
     private String timestamp;
 
     public Ticket() {
     }
 
-    public Ticket(String customerId, String concern, String timestamp) {
+    public Ticket(Long customerId, String concern, String timestamp) {
         this.customerId = customerId;
         this.concern = concern;
         this.timestamp = timestamp;
@@ -39,5 +39,9 @@ public class Ticket {
     @Override
     public int hashCode() {
         return Objects.hash(customerId, concern, timestamp);
+    }
+
+    public Long customerId() {
+        return customerId;
     }
 }

@@ -4,6 +4,8 @@ import com.example.routingservice.entity.Customer;
 import com.example.routingservice.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CustomerService {
     private CustomerRepository customerRepository;
@@ -12,11 +14,7 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public Customer findById(Long customerId) {
-        return customerRepository.findById(customerId).orElse(dummyCustomer());
-    }
-
-    private Customer dummyCustomer() {
-        return new Customer(101L, "dummy customer", "Pune", "1234567890");
+    public Optional<Customer> findById(Long customerId) {
+        return customerRepository.findById(customerId);
     }
 }
