@@ -14,11 +14,11 @@ public class ConsultantService {
     @Autowired
     private ConsultantRepository consultantRepository;
 
-    public Optional<Consultant> findAvailableConsultantWithSpecialization(String timeStamp, String specialization) {
-        return consultantRepository.findAvailableConsultantWithSpecialization(Timestamp.valueOf(timeStamp), specialization);
+    public Optional<Consultant> findAvailableConsultant(String timeStamp, String specialization) {
+        return consultantRepository.findNearestAvailableConsultant(Timestamp.valueOf(timeStamp), specialization);
     }
 
-    public Optional<Consultant> findNearestAvailableConsultantWithSpecialization(String timeStamp, String specialization, String place) {
-        return consultantRepository.findNearestAvailableConsultantWithSpecialization(Timestamp.valueOf(timeStamp), specialization, place);
+    public Optional<Consultant> findNearestAvailableConsultant(String timeStamp, String specialization, String place) {
+        return consultantRepository.findNearestAvailableConsultant(Timestamp.valueOf(timeStamp), specialization, place);
     }
 }

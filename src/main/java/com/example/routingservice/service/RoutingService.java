@@ -31,8 +31,8 @@ public class RoutingService {
         Optional<Customer> customer = customerService.findById(ticket.customerId());
         customer.orElseThrow(() -> new CustomerNotFoundException(ticket.customerId()));
 
-        Optional<Consultant> nearestAvailableConsultant = consultantService.findNearestAvailableConsultantWithSpecialization(ticket.date(), ticket.concern(), customer.get().place());
-        Optional<Consultant> availableConsultant = consultantService.findAvailableConsultantWithSpecialization(ticket.date(), ticket.concern());
+        Optional<Consultant> nearestAvailableConsultant = consultantService.findNearestAvailableConsultant(ticket.date(), ticket.concern(), customer.get().place());
+        Optional<Consultant> availableConsultant = consultantService.findAvailableConsultant(ticket.date(), ticket.concern());
 
         return nearestAvailableConsultant.orElse(availableConsultant.orElse(Consultant.noConsultant()));
     }
