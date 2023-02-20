@@ -40,9 +40,8 @@ public class Consultant {
         this.place = place;
     }
 
-
-    public List<ConsultantAvailability> getAvailableConsultants() {
-        return availableConsultants;
+    public static Consultant noConsultant() {
+        return null;
     }
 
     @Override
