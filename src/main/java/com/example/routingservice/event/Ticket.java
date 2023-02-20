@@ -1,4 +1,4 @@
-package model;
+package com.example.routingservice.event;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
