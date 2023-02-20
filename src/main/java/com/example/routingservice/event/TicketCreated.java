@@ -14,9 +14,13 @@ public class TicketCreated {
     public TicketCreated() {
     }
 
-    public TicketCreated(Ticket ticket, TicketStatus ticketStatus) {
+    public TicketCreated(Ticket ticket) {
         this.ticket = ticket;
-        this.ticketStatus = ticketStatus;
+        this.ticketStatus = TicketStatus.CREATED;
+    }
+
+    public Ticket ticket() {
+        return ticket;
     }
 
     @Override

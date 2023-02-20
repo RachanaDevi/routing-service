@@ -20,7 +20,7 @@ public class Ticket {
         this.timestamp = timestamp;
     }
 
-    public String date() {
+    public String timestamp() {
         return timestamp;
     }
 
