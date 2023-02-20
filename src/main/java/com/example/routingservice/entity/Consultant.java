@@ -1,5 +1,6 @@
 package com.example.routingservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "consultants")
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Consultant {
 
     @Id

@@ -24,6 +24,10 @@ public class Ticket {
         return timestamp;
     }
 
+    public String concern() {
+        return concern;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
