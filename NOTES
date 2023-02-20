@@ -19,3 +19,7 @@ psql -U postgres
 TODO:
 1. Link the database and the queries all and for once
 2. See if it is able to get the table
+3. Make customer repository with customer service
+4. See where all databases have to be
+5. Difference between date of ticket and availability date for customer as well (to be implemented later)
+6. Change structure for the consultant date
