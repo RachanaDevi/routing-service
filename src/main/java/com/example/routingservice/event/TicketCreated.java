@@ -1,6 +1,7 @@
 package com.example.routingservice.event;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import model.Ticket;
 
 import java.util.Objects;
 
