@@ -40,7 +40,8 @@ public class RoutingService {
         Optional<Consultant> availableConsultant = consultantService.findAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern());
 
         Consultant consultant = nearestAvailableConsultant.orElse(availableConsultant.orElse(Consultant.noConsultant()));
-        System.out.println(":>>>>> CONSULTANT" + consultant);
+        // publish to ticket-service
+        // publish to notification-service-topic
         return consultant;
     }
 }
