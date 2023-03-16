@@ -42,7 +42,9 @@ public class RoutingService {
         Page<Consultant> availableConsultant = consultantService.findAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern());
 
         // handle if no consultant is there at all
-        Consultant consultant = nearestAvailableConsultant.get().findFirst().orElse(availableConsultant.get().findFirst().orElse(Consultant.noConsultant()));
+        Consultant consultant = nearestAvailableConsultant.get().findFirst().orElse(availableConsultant.get().findFirst().orElseThrow(() -> new RuntimeException("No consultant found!")));
+
+        consultantService.updateAsUnavailable(consultant);
         notificationPublisher.publish(new NotifyConsultant(ticketCreated.ticketId(), consultant.id()));
         ticketAssignmentPublisher.publish(TicketAssigned.createdFrom(ticketCreated.ticketId(), consultant.id()));
 
