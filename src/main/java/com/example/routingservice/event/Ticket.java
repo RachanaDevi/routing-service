@@ -3,24 +3,25 @@ package com.example.routingservice.event;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import java.util.Objects;
-import java.util.UUID;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Ticket {
 
-    private UUID ticketId;
+    private Long ticketId;
     private Long customerId;
     private String concern;
     private String timestamp;
+    private String place;
 
     public Ticket() {
     }
 
-    public Ticket(UUID ticketId, Long customerId, String concern, String timestamp) {
+    public Ticket(Long ticketId, Long customerId, String concern, String timestamp, String place) {
         this.ticketId = ticketId;
         this.customerId = customerId;
         this.concern = concern;
         this.timestamp = timestamp;
+        this.place = place;
     }
 
     public String timestamp() {
@@ -44,11 +45,11 @@ public class Ticket {
         return Objects.hash(ticketId, customerId, concern, timestamp);
     }
 
-    public Long customerId() {
-        return customerId;
+    public Long ticketId() {
+        return ticketId;
     }
 
-    public UUID ticketId() {
-        return ticketId;
+    public String place() {
+        return place;
     }
 }

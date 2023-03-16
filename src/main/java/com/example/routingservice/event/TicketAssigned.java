@@ -9,19 +9,15 @@ import java.util.UUID;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class TicketAssigned {
 
-    private final UUID ticketId; // you don't need to create and send back the ticket again
+    private final Long ticketId; // you don't need to create and send back the ticket again
     private final Long consultantId;
-    private final TicketStatus ticketStatus;
-
-
     @JsonCreator
-    public TicketAssigned(UUID ticketId, Long consultantId) {
+    public TicketAssigned(Long ticketId, Long consultantId) {
         this.ticketId = ticketId;
         this.consultantId = consultantId;
-        this.ticketStatus = TicketStatus.ASSIGNED;
     }
 
-    public static TicketAssigned createdFrom(UUID ticketId, Long consultantId) {
+    public static TicketAssigned createdFrom(Long ticketId, Long consultantId) {
         return new TicketAssigned(ticketId, consultantId);
     }
 
@@ -30,15 +26,11 @@ public class TicketAssigned {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TicketAssigned that = (TicketAssigned) o;
-        return Objects.equals(ticketId, that.ticketId) && Objects.equals(consultantId, that.consultantId) && ticketStatus == that.ticketStatus;
+        return Objects.equals(ticketId, that.ticketId) && Objects.equals(consultantId, that.consultantId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticketId, consultantId, ticketStatus);
-    }
-
-    public TicketStatus status() {
-        return this.ticketStatus;
+        return Objects.hash(ticketId, consultantId);
     }
 }

@@ -1,8 +1,8 @@
 Curl command to create ticket
-curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": "1234","concern": "Washing machine not working properly","date" : "2022-01-01"}'
+curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": 1,"concern": "Washing machine","timestamp" : "2023-02-18 01:24:00", "place": "Pune"}'
 
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-service-topic --from-beginning
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic notification-service-topic --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-created-topic --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic notification-consultant-topic --from-beginning
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-assigned-topic --from-beginning
 
 psql -U postgres

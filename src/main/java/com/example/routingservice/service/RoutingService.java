@@ -2,11 +2,9 @@ package com.example.routingservice.service;
 
 import com.example.routingservice.constants.KafkaConfigConstants;
 import com.example.routingservice.entity.Consultant;
-import com.example.routingservice.entity.Customer;
 import com.example.routingservice.event.NotifyConsultant;
 import com.example.routingservice.event.Ticket;
 import com.example.routingservice.event.TicketAssigned;
-import com.example.routingservice.exception.CustomerNotFoundException;
 import com.example.routingservice.producer.NotificationPublisher;
 import com.example.routingservice.producer.TicketPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +20,6 @@ public class RoutingService {
 
     private ConsultantService consultantService;
 
-    private CustomerService customerService;
-
     private NotificationPublisher notificationPublisher;
 
     private TicketPublisher ticketAssignmentPublisher;
@@ -32,40 +28,24 @@ public class RoutingService {
     }
 
     @Autowired
-    public RoutingService(ConsultantService consultantService, CustomerService customerService, NotificationPublisher notificationPublisher, TicketPublisher ticketAssignmentPublisher) {
+    public RoutingService(ConsultantService consultantService, NotificationPublisher notificationPublisher, TicketPublisher ticketAssignmentPublisher) {
         this.consultantService = consultantService;
-        this.customerService = customerService;
         this.notificationPublisher = notificationPublisher;
         this.ticketAssignmentPublisher = ticketAssignmentPublisher;
     }
 
-    @KafkaListener(topics = KafkaConfigConstants.TICKET_SERVICE_TOPIC,
+    @KafkaListener(topics = KafkaConfigConstants.TICKET_CREATED_TOPIC,
             groupId = KafkaConfigConstants.TICKET_EVENT_CONSUMER_GROUP
     )
     public Consultant assignedConsultant(Ticket ticketCreated) {
-        // this is from customer service, so we have to get data from customer microservice
-        // here the invocation is not correct in that case
-        Optional<Customer> customer = customerService.findById(ticketCreated.customerId());
-        customer.orElseThrow(() -> new CustomerNotFoundException(ticketCreated.customerId()));
-
-        Optional<Consultant> nearestAvailableConsultant = consultantService.findNearestAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern(), customer.get().place());
+        Optional<Consultant> nearestAvailableConsultant = consultantService.findNearestAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern(), ticketCreated.place());
         Optional<Consultant> availableConsultant = consultantService.findAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern());
 
         Consultant consultant = nearestAvailableConsultant.orElse(availableConsultant.orElse(Consultant.noConsultant()));
-        // all have to be routed
-
-        // we have to update the ticket status in the ticket table
-
-        // so you have to update the availability here
-        // but should that be confirmed after the consulant has been confirmed?
-        // so let us make sure that the consultant has confirmed it
-        // publish to ticket-service
-        // to have consultant assigned and remove the consultant availability
-        // publish to notification-service-topic
         notificationPublisher.publish(new NotifyConsultant(ticketCreated.ticketId(), consultant.id()));
         ticketAssignmentPublisher.publish(TicketAssigned.createdFrom(ticketCreated.ticketId(), consultant.id()));
 
-        System.out.println(">>> CONSULTANT"+consultant);
+        System.out.println(">>> CONSULTANT" + consultant);
         return consultant;
     }
 }
