@@ -5,6 +5,7 @@ import com.example.routingservice.entity.Consultant;
 import com.example.routingservice.event.NotifyConsultant;
 import com.example.routingservice.event.Ticket;
 import com.example.routingservice.event.TicketAssigned;
+import com.example.routingservice.exception.ConsultantNotFoundException;
 import com.example.routingservice.producer.NotificationPublisher;
 import com.example.routingservice.producer.TicketPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,11 @@ public class RoutingService {
         Page<Consultant> availableConsultant = consultantService.findAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern());
 
         // handle if no consultant is there at all
-        Consultant consultant = nearestAvailableConsultant.get().findFirst().orElse(availableConsultant.get().findFirst().orElseThrow(() -> new RuntimeException("No consultant found!")));
+        Consultant consultant = nearestAvailableConsultant
+                .get()
+                .findFirst()
+                .orElse(availableConsultant.get().findFirst().orElseThrow
+                        (() -> new ConsultantNotFoundException(ticketCreated.timestamp(), ticketCreated.concern(), ticketCreated.place())));
 
         consultantService.updateAsUnavailable(consultant);
         notificationPublisher.publish(new NotifyConsultant(ticketCreated.ticketId(), consultant.id()));
