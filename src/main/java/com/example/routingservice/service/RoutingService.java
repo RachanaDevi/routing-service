@@ -33,6 +33,8 @@ public class RoutingService {
             groupId = KafkaConfigConstants.TICKET_EVENT_CONSUMER_GROUP
     )
     public Consultant assignedConsultant(Ticket ticketCreated) {
+        // this is from customer service, so we have to get data from customer microservice
+        // here the invocation is not correct in that case
         Optional<Customer> customer = customerService.findById(ticketCreated.customerId());
         customer.orElseThrow(() -> new CustomerNotFoundException(ticketCreated.customerId()));
 
@@ -40,8 +42,17 @@ public class RoutingService {
         Optional<Consultant> availableConsultant = consultantService.findAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern());
 
         Consultant consultant = nearestAvailableConsultant.orElse(availableConsultant.orElse(Consultant.noConsultant()));
+        // all have to be routed
+
+        // we have to update the ticket status in the ticket table
+
+        // so you have to update the availability here
+        // but should that be confirmed after the consulant has been confirmed?
+        // so let us make sure that the consultant has confirmed it
         // publish to ticket-service
+        // to have consultant assigned and remove the consultant availability
         // publish to notification-service-topic
+        System.out.println(">>> CONSULTANT"+consultant);
         return consultant;
     }
 }

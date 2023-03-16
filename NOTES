@@ -27,3 +27,19 @@ TODO:
 7. Do we require to return a list of Consultants in the first place or is one consultant fine
 8. When a consultant becomes free later, ie a ticket was cancelled
 9. Revisit ticket and see if we want to pass on created status
+
+Questions:
+1. Ticket entity and ticket event
+2. Do we write join queries in Entities? JPA queries
+3. Ticket being used TicketAssigned, TicketStatus, Customer
+ticket routing and then the routing
+- you need customer and service
+- they're different services also
+- you might have start with those services
+- would need these objects
+- or one more option the routing service need not exist, it could api inside the consultant service
+- it consultant service
+- consumed the ticket created
+- created fire it that consultant
+4. How to make sure a consultant is available in real time?
+   - For now we are assuming that the data is correct and the data is up to date.

@@ -8,8 +8,12 @@ import java.util.Objects;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class TicketAssigned {
 
-    private final Ticket ticket;
+    private final Ticket ticket; // you don't need to create and send back the ticket again
+    // you can just send a notification event here
+    // but here you have a consultant id with it
     private final TicketStatus ticketStatus;
+
+    private long consultantId;
 
     @JsonCreator
     public TicketAssigned(Ticket ticket) {
