@@ -15,11 +15,3 @@ CREATE TABLE consultants_availability
     available      boolean,
     FOREIGN KEY (consultant_id) references consultants (id)
 );
-
-CREATE TABLE customers
-(
-    id          serial PRIMARY KEY,
-    name        VARCHAR(255),
-    place       VARCHAR(255),
-    phone_number VARCHAR(255)
-);
