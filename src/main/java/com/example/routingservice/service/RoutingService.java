@@ -5,6 +5,7 @@ import com.example.routingservice.entity.Consultant;
 import com.example.routingservice.entity.Customer;
 import com.example.routingservice.exception.CustomerNotFoundException;
 import com.example.routingservice.event.Ticket;
+import com.example.routingservice.producer.NotificationPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
