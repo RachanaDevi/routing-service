@@ -12,7 +12,8 @@ import java.util.Optional;
 @Repository
 public interface ConsultantRepository extends JpaRepository<Consultant, Long> {
 
-    @Query(value = "select c.* from consultants_availability ca inner join consultants c on consultant_id=c.id where :date>=ca.available_from and :date <=ca.available_to and ca.available=true and c.specialization like %:specialization% order by ca.available_from limit 1", nativeQuery = true)
+    //    @Query(value = "select c.* from consultants_availability ca inner join consultants c on consultant_id=c.id where :date>=ca.available_from and :date <=ca.available_to and ca.available=true and c.specialization like %:specialization% order by ca.available_from limit 1", nativeQuery = true)
+    @Query("SELECT consultant FROM Consultant consultant JOIN consultant.consultantsAvailabilityList ca WHERE :date>=ca.availableFrom and :date <=ca.availableTo and ca.available=true and consultant.specialization like %:specialization% order by ca.availableFrom")
     Optional<Consultant> findNearestAvailableConsultant(Timestamp date, String specialization);
 
     @Query(value = "select c.* from consultants_availability ca inner join consultants c on consultant_id=c.id where :date>=ca.available_from and :date <=ca.available_to and ca.available=true and c.specialization like %:specialization% and c.place like %:place% order by ca.available_from limit 1", nativeQuery = true)

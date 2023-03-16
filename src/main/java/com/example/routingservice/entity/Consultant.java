@@ -3,6 +3,8 @@ package com.example.routingservice.entity;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,6 +21,12 @@ public class Consultant {
     private String specialization;
 
     private String place;
+
+    @ManyToMany
+    @JoinTable(name = "consultants_availability",
+            joinColumns = @JoinColumn(name = "consultant_id"),
+            inverseJoinColumns = @JoinColumn(name = "id"))
+    private List<ConsultantAvailability> consultantsAvailabilityList = new ArrayList<>();
 
     public Consultant() {
     }
