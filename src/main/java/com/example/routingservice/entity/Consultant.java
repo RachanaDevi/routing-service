@@ -34,6 +34,11 @@ public class Consultant {
         return null;
     }
 
+
+    public Long id() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "Consultant{" +

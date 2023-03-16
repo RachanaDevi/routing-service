@@ -47,4 +47,8 @@ public class Ticket {
     public Long customerId() {
         return customerId;
     }
+
+    public UUID ticketId() {
+        return ticketId;
+    }
 }

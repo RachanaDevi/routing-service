@@ -3,9 +3,12 @@ package com.example.routingservice.service;
 import com.example.routingservice.constants.KafkaConfigConstants;
 import com.example.routingservice.entity.Consultant;
 import com.example.routingservice.entity.Customer;
-import com.example.routingservice.exception.CustomerNotFoundException;
+import com.example.routingservice.event.NotifyConsultant;
 import com.example.routingservice.event.Ticket;
+import com.example.routingservice.event.TicketAssigned;
+import com.example.routingservice.exception.CustomerNotFoundException;
 import com.example.routingservice.producer.NotificationPublisher;
+import com.example.routingservice.producer.TicketPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -21,13 +24,19 @@ public class RoutingService {
 
     private CustomerService customerService;
 
+    private NotificationPublisher notificationPublisher;
+
+    private TicketPublisher ticketAssignmentPublisher;
+
     public RoutingService() {
     }
 
     @Autowired
-    public RoutingService(ConsultantService consultantService, CustomerService customerService) {
+    public RoutingService(ConsultantService consultantService, CustomerService customerService, NotificationPublisher notificationPublisher, TicketPublisher ticketAssignmentPublisher) {
         this.consultantService = consultantService;
         this.customerService = customerService;
+        this.notificationPublisher = notificationPublisher;
+        this.ticketAssignmentPublisher = ticketAssignmentPublisher;
     }
 
     @KafkaListener(topics = KafkaConfigConstants.TICKET_SERVICE_TOPIC,
@@ -53,6 +62,9 @@ public class RoutingService {
         // publish to ticket-service
         // to have consultant assigned and remove the consultant availability
         // publish to notification-service-topic
+        notificationPublisher.publish(new NotifyConsultant(ticketCreated.ticketId(), consultant.id()));
+        ticketAssignmentPublisher.publish(TicketAssigned.createdFrom(ticketCreated.ticketId(), consultant.id()));
+
         System.out.println(">>> CONSULTANT"+consultant);
         return consultant;
     }
