@@ -8,11 +8,11 @@ import com.example.routingservice.event.TicketAssigned;
 import com.example.routingservice.producer.NotificationPublisher;
 import com.example.routingservice.producer.TicketPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Optional;
 
 
 @Service
@@ -38,10 +38,11 @@ public class RoutingService {
             groupId = KafkaConfigConstants.TICKET_EVENT_CONSUMER_GROUP
     )
     public Consultant assignedConsultant(Ticket ticketCreated) {
-        Optional<Consultant> nearestAvailableConsultant = consultantService.findNearestAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern(), ticketCreated.place());
-        Optional<Consultant> availableConsultant = consultantService.findAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern());
+        Page<Consultant> nearestAvailableConsultant = consultantService.findNearestAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern(), ticketCreated.place());
+        Page<Consultant> availableConsultant = consultantService.findAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern());
 
-        Consultant consultant = nearestAvailableConsultant.orElse(availableConsultant.orElse(Consultant.noConsultant()));
+        // handle if no consultant is there at all
+        Consultant consultant = nearestAvailableConsultant.get().findFirst().orElse(availableConsultant.get().findFirst().orElse(Consultant.noConsultant()));
         notificationPublisher.publish(new NotifyConsultant(ticketCreated.ticketId(), consultant.id()));
         ticketAssignmentPublisher.publish(TicketAssigned.createdFrom(ticketCreated.ticketId(), consultant.id()));
 
