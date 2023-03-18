@@ -14,19 +14,17 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 
 @Service
 public class RoutingService {
 
-    private ConsultantService consultantService;
+    private final ConsultantService consultantService;
 
-    private NotificationPublisher notificationPublisher;
+    private final NotificationPublisher notificationPublisher;
 
-    private TicketPublisher ticketAssignmentPublisher;
-
-    public RoutingService() {
-    }
+    private final TicketPublisher ticketAssignmentPublisher;
 
     @Autowired
     public RoutingService(ConsultantService consultantService, NotificationPublisher notificationPublisher, TicketPublisher ticketAssignmentPublisher) {
@@ -38,22 +36,12 @@ public class RoutingService {
     @KafkaListener(topics = KafkaConfigConstants.TICKET_CREATED_TOPIC,
             groupId = KafkaConfigConstants.TICKET_EVENT_CONSUMER_GROUP
     )
-    public Consultant assignedConsultant(Ticket ticketCreated) {
-        Page<Consultant> nearestAvailableConsultant = consultantService.findNearestAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern(), ticketCreated.place());
-        Page<Consultant> availableConsultant = consultantService.findAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern());
+    public void assignedConsultant(Ticket ticketCreated) {
+        Consultant consultant = consultantService.findNearestAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern(), ticketCreated.place());
 
-        // handle if no consultant is there at all
-        Consultant consultant = nearestAvailableConsultant
-                .get()
-                .findFirst()
-                .orElse(availableConsultant.get().findFirst().orElseThrow
-                        (() -> new ConsultantNotFoundException(ticketCreated.timestamp(), ticketCreated.concern(), ticketCreated.place())));
-
-        consultantService.updateAsUnavailable(consultant);
         notificationPublisher.publish(new NotifyConsultant(ticketCreated.ticketId(), consultant.id()));
         ticketAssignmentPublisher.publish(TicketAssigned.createdFrom(ticketCreated.ticketId(), consultant.id()));
 
         System.out.println(">>> CONSULTANT" + consultant);
-        return consultant;
     }
 }

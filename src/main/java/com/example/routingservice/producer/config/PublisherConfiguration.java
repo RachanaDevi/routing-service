@@ -1,4 +1,4 @@
-package com.example.routingservice.producer;
+package com.example.routingservice.producer.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

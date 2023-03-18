@@ -27,13 +27,4 @@ public class Customer {
         return place;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", place='" + place + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
-    }
 }

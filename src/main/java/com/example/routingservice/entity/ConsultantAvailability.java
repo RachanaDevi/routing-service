@@ -26,22 +26,29 @@ public class ConsultantAvailability {
 
     private Boolean available;
 
-    @ManyToMany(mappedBy = "consultantsAvailabilityList")
+    @ManyToMany(mappedBy = "consultantsAvailabilityList", fetch = FetchType.EAGER)
     private List<Consultant> availableConsultants = new ArrayList<>();
 
     public ConsultantAvailability() {
     }
 
-    public ConsultantAvailability(Long id, List<Consultant> availableConsultants) {
-        this.id = id;
-        this.availableConsultants = availableConsultants;
+    public long id() {
+        return id;
     }
 
-    public List<Consultant> getAvailableConsultants() {
-        return availableConsultants;
-    }
-
-    public long getConsultantId() {
+    public long consultantId() {
         return consultantId;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsultantAvailability{" +
+                "id=" + id +
+                ", consultantId=" + consultantId +
+                ", availableFrom=" + availableFrom +
+                ", availableTo=" + availableTo +
+                ", available=" + available +
+                ", availableConsultants=" + availableConsultants +
+                '}';
     }
 }

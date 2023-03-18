@@ -8,9 +8,9 @@ class ConsultantNotFoundExceptionTest {
 
     @Test
     void shouldReturnExceptionMessage() {
-        ConsultantNotFoundException consultantNotFoundException = new ConsultantNotFoundException("anyTimestamp", "anySpecialization", "anyPlace");
+        ConsultantNotFoundException consultantNotFoundException = new ConsultantNotFoundException(2L);
 
         assertThat(consultantNotFoundException.getMessage())
-                .isEqualTo("Could not find assigned consultant available at {anyTimestamp} specialized at {anySpecialization} and from place {anyPlace}");
+                .isEqualTo("Could not find consultant with consultant id {2}");
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.CompletableFuture;
 
 import static com.example.routingservice.constants.KafkaConfigConstants.NOTIFICATION_SERVICE_TOPIC;
-import static com.example.routingservice.constants.KafkaConfigConstants.TICKET_ASSIGNED_TOPIC;
 
 @Component
 public class NotificationPublisher {
@@ -19,7 +18,7 @@ public class NotificationPublisher {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public CompletableFuture<SendResult<String,  NotifyConsultant>> publish(NotifyConsultant notification) {
+    public CompletableFuture<SendResult<String, NotifyConsultant>> publish(NotifyConsultant notification) {
         return kafkaTemplate.send(NOTIFICATION_SERVICE_TOPIC, notification);
     }
 }

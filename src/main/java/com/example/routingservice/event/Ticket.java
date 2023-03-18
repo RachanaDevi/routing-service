@@ -16,14 +16,6 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(Long ticketId, Long customerId, String concern, String timestamp, String place) {
-        this.ticketId = ticketId;
-        this.customerId = customerId;
-        this.concern = concern;
-        this.timestamp = timestamp;
-        this.place = place;
-    }
-
     public String timestamp() {
         return timestamp;
     }
