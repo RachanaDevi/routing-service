@@ -31,9 +31,6 @@ public class TicketConsumerConfig {
 
     @Bean
     public ConsumerFactory<String, Ticket> consumerFactory() {
-//        JsonDeserializer<TicketEvent> ticketEventJsonDeserializer = new JsonDeserializer<>(TicketEvent.class, false);
-//        ticketEventJsonDeserializer.addTrustedPackages("*");
-//        return new DefaultKafkaConsumerFactory<>(consumerConfigurations(), new StringDeserializer(), ticketEventJsonDeserializer);
         return new DefaultKafkaConsumerFactory<>(consumerConfigurations());
     }
 

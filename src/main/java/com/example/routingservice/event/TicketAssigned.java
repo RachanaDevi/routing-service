@@ -9,7 +9,7 @@ import java.util.UUID;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class TicketAssigned {
 
-    private final Long ticketId; // you don't need to create and send back the ticket again
+    private final Long ticketId;
     private final Long consultantId;
     @JsonCreator
     public TicketAssigned(Long ticketId, Long consultantId) {
