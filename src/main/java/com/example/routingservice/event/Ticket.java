@@ -10,14 +10,14 @@ public class Ticket {
     private Long ticketId;
     private Long customerId;
     private String concern;
-    private String timestamp;
+    private String scheduledTimestamp;
     private String place;
 
     public Ticket() {
     }
 
-    public String timestamp() {
-        return timestamp;
+    public String scheduledTimestamp() {
+        return scheduledTimestamp;
     }
 
     public String concern() {
@@ -29,12 +29,12 @@ public class Ticket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ticket ticket = (Ticket) o;
-        return Objects.equals(ticketId, ticket.ticketId) && Objects.equals(customerId, ticket.customerId) && Objects.equals(concern, ticket.concern) && Objects.equals(timestamp, ticket.timestamp);
+        return Objects.equals(ticketId, ticket.ticketId) && Objects.equals(customerId, ticket.customerId) && Objects.equals(concern, ticket.concern) && Objects.equals(scheduledTimestamp, ticket.scheduledTimestamp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticketId, customerId, concern, timestamp);
+        return Objects.hash(ticketId, customerId, concern, scheduledTimestamp);
     }
 
     public Long ticketId() {

@@ -5,16 +5,13 @@ import com.example.routingservice.entity.Consultant;
 import com.example.routingservice.event.NotifyConsultant;
 import com.example.routingservice.event.Ticket;
 import com.example.routingservice.event.TicketAssigned;
-import com.example.routingservice.exception.ConsultantNotFoundException;
 import com.example.routingservice.producer.NotificationPublisher;
 import com.example.routingservice.producer.TicketPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Optional;
 
 
 @Service
@@ -37,7 +34,7 @@ public class RoutingService {
             groupId = KafkaConfigConstants.TICKET_EVENT_CONSUMER_GROUP
     )
     public void assignedConsultant(Ticket ticketCreated) {
-        Consultant consultant = consultantService.findNearestAvailableConsultant(Timestamp.valueOf(ticketCreated.timestamp()), ticketCreated.concern(), ticketCreated.place());
+        Consultant consultant = consultantService.findNearestAvailableConsultant(Timestamp.valueOf(ticketCreated.scheduledTimestamp()), ticketCreated.concern(), ticketCreated.place());
 
         notificationPublisher.publish(new NotifyConsultant(ticketCreated.ticketId(), consultant.id()));
         ticketAssignmentPublisher.publish(TicketAssigned.createdFrom(ticketCreated.ticketId(), consultant.id()));
