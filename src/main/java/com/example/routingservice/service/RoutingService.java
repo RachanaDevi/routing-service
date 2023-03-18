@@ -10,6 +10,7 @@ import com.example.routingservice.producer.TicketPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 
@@ -33,6 +34,7 @@ public class RoutingService {
     @KafkaListener(topics = KafkaConfigConstants.TICKET_CREATED_TOPIC,
             groupId = KafkaConfigConstants.TICKET_EVENT_CONSUMER_GROUP
     )
+    @Transactional
     public void assignedConsultant(Ticket ticketCreated) {
         Consultant consultant = consultantService.findNearestAvailableConsultant(Timestamp.valueOf(ticketCreated.scheduledTimestamp()), ticketCreated.concern(), ticketCreated.place());
 
