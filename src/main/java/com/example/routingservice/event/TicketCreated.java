@@ -5,14 +5,14 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import java.util.Objects;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class Ticket {
+public class TicketCreated {
 
     private Long ticketId;
     private String concern;
     private String scheduledTimestamp;
     private String place;
 
-    public Ticket() {
+    public TicketCreated() {
     }
 
     public String scheduledTimestamp() {
@@ -27,8 +27,8 @@ public class Ticket {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Ticket ticket = (Ticket) o;
-        return Objects.equals(ticketId, ticket.ticketId) && Objects.equals(concern, ticket.concern) && Objects.equals(scheduledTimestamp, ticket.scheduledTimestamp);
+        TicketCreated ticketCreated = (TicketCreated) o;
+        return Objects.equals(ticketId, ticketCreated.ticketId) && Objects.equals(concern, ticketCreated.concern) && Objects.equals(scheduledTimestamp, ticketCreated.scheduledTimestamp);
     }
 
     @Override

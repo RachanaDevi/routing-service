@@ -3,8 +3,8 @@ package com.example.routingservice.service;
 import com.example.routingservice.constants.KafkaConfigConstants;
 import com.example.routingservice.entity.Consultant;
 import com.example.routingservice.event.NotifyConsultant;
-import com.example.routingservice.event.Ticket;
 import com.example.routingservice.event.TicketAssigned;
+import com.example.routingservice.event.TicketCreated;
 import com.example.routingservice.producer.NotificationPublisher;
 import com.example.routingservice.producer.TicketPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class RoutingService {
             groupId = KafkaConfigConstants.TICKET_EVENT_CONSUMER_GROUP
     )
     @Transactional
-    public void assignedConsultant(Ticket ticketCreated) {
+    public void assignedConsultant(TicketCreated ticketCreated) {
         Consultant consultant = consultantService.findNearestAvailableConsultant(Timestamp.valueOf(ticketCreated.scheduledTimestamp()), ticketCreated.concern(), ticketCreated.place());
 
         notificationPublisher.publish(new NotifyConsultant(ticketCreated.ticketId(), consultant.id()));
