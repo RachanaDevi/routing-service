@@ -1,9 +1,9 @@
-Curl command to create ticket
+Curl command to create ticketCreated
 curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": 1,"concern": "Washing machine","timestamp" : "2023-02-18 01:24:00", "place": "Pune"}'
 
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-created-topic --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticketCreated-created-topic --from-beginning
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic notification-consultant-topic --from-beginning
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-assigned-topic --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticketCreated-assigned-topic --from-beginning
 
 psql -U postgres
 
@@ -27,24 +27,24 @@ TODO:
 2. See if it is able to get the table
 3. Make customer repository with customer service
 4. See where all databases have to be
-5. Difference between date of ticket and availability date for customer as well (to be implemented later)
+5. Difference between date of ticketCreated and availability date for customer as well (to be implemented later)
 6. Change structure for the consultant date
 7. Do we require to return a list of Consultants in the first place or is one consultant fine
-8. When a consultant becomes free later, ie a ticket was cancelled
-9. Revisit ticket and see if we want to pass on created status
+8. When a consultant becomes free later, ie a ticketCreated was cancelled
+9. Revisit ticketCreated and see if we want to pass on created status
 
 Questions:
-1. Ticket entity and ticket event
+1. Ticket entity and ticketCreated event
 2. Do we write join queries in Entities? JPA queries
 3. Ticket being used TicketAssigned, TicketStatus, Customer
-ticket routing and then the routing
+ticketCreated routing and then the routing
 - you need customer and service
 - they're different services also
 - you might have start with those services
 - would need these objects
 - or one more option the routing service need not exist, it could api inside the consultant service
 - it consultant service
-- consumed the ticket created
+- consumed the ticketCreated created
 - created fire it that consultant
 4. How to make sure a consultant is available in real time?
    - For now we are assuming that the data is correct and the data is up to date.
