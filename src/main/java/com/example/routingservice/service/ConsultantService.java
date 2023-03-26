@@ -27,8 +27,8 @@ public class ConsultantService {
         this.consultantAvailabilityRepository = consultantAvailabilityRepository;
     }
 
-    public Consultant findNearestAvailableConsultant(Timestamp timeStamp, String specialization, String place) {
-        Page<ConsultantAvailability> nearestAvailableConsultant = consultantAvailabilityRepository.findNearestAvailableConsultant(timeStamp, specialization, place, Pageable.ofSize(1));
+    public Consultant findNearestAvailableConsultant(Timestamp timeStamp, Long specializationId, String place) {
+        Page<ConsultantAvailability> nearestAvailableConsultant = consultantAvailabilityRepository.findNearestAvailableConsultant(timeStamp, specializationId, place, Pageable.ofSize(1));
         if (nearestAvailableConsultant.get().findFirst().isPresent()) {
             long id = nearestAvailableConsultant.get().findFirst().get().id();
             consultantAvailabilityRepository.updateAsUnavailableConsultant(id);
@@ -37,11 +37,11 @@ public class ConsultantService {
                 return availableConsultant.get();
             }
         }
-        return findAvailableConsultant(timeStamp, specialization, place);
+        return findAvailableConsultant(timeStamp, specializationId, place);
     }
 
-    private Consultant findAvailableConsultant(Timestamp timeStamp, String specialization, String place) {
-        Page<ConsultantAvailability> availableConsultant = consultantAvailabilityRepository.findAvailableConsultant(timeStamp, specialization, Pageable.ofSize(1));
+    private Consultant findAvailableConsultant(Timestamp timeStamp, Long specializationId, String place) {
+        Page<ConsultantAvailability> availableConsultant = consultantAvailabilityRepository.findAvailableConsultant(timeStamp, specializationId, Pageable.ofSize(1));
         if (availableConsultant.get().findFirst().isPresent()) {
             consultantAvailabilityRepository.updateAsUnavailableConsultant(availableConsultant.get().findFirst().get().id());
             long id = availableConsultant.get()
@@ -51,6 +51,6 @@ public class ConsultantService {
             return consultantRepository.findById(id)
                     .orElseThrow(() -> new ConsultantNotFoundException(id));
         }
-        throw new ConsultantUnavailableException(String.valueOf(timeStamp), specialization, place);
+        throw new ConsultantUnavailableException(String.valueOf(timeStamp), specializationId, place);
     }
 }

@@ -18,7 +18,7 @@ public class Consultant {
 
     private String name;
 
-    private String specialization;
+    private Long specializationId;
 
     private String place;
 
@@ -31,10 +31,10 @@ public class Consultant {
     public Consultant() {
     }
 
-    public Consultant(Long id, String name, String specialization, String place) {
+    public Consultant(Long id, String name, Long specializationId, String place) {
         this.id = id;
         this.name = name;
-        this.specialization = specialization;
+        this.specializationId = specializationId;
         this.place = place;
     }
 
@@ -52,7 +52,7 @@ public class Consultant {
         return "Consultant{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", specialization='" + specialization + '\'' +
+                ", specializationId='" + specializationId + '\'' +
                 ", place='" + place + '\'' +
                 '}';
     }
@@ -62,11 +62,11 @@ public class Consultant {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Consultant that = (Consultant) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(specialization, that.specialization) && Objects.equals(place, that.place);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(specializationId, that.specializationId) && Objects.equals(place, that.place);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, specialization, place);
+        return Objects.hash(id, name, specializationId, place);
     }
 }

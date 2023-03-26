@@ -1,7 +1,7 @@
-INSERT INTO consultants (name, specialization, place)
-VALUES ('Tom', 'Washing machine', 'Pune');
-INSERT INTO consultants (name, specialization, place)
-VALUES ('Kate', 'Television', 'Mumbai');
+INSERT INTO consultants (name, specialization_id, place)
+VALUES ('Tom', 1, 'Pune');
+INSERT INTO consultants (name, specialization_id, place)
+VALUES ('Kate', '2, 'Mumbai');
 
 
 INSERT INTO consultants_availability (consultant_id, available_from, available_to, available)

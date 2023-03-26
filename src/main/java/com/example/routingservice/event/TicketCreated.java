@@ -23,8 +23,8 @@ public class TicketCreated {
         return scheduledTimestamp;
     }
 
-    public String concern() {
-        return concern;
+    public Long productCategoryId() {
+        return productCategoryId;
     }
 
     @Override

@@ -36,7 +36,8 @@ public class RoutingService {
     )
     @Transactional
     public void assignedConsultant(TicketCreated ticketCreated) {
-        Consultant consultant = consultantService.findNearestAvailableConsultant(Timestamp.valueOf(ticketCreated.scheduledTimestamp()), ticketCreated.concern(), ticketCreated.place());
+        Consultant consultant = consultantService.findNearestAvailableConsultant(Timestamp.valueOf(ticketCreated.scheduledTimestamp()),
+                ticketCreated.productCategoryId(), ticketCreated.place());
 
         notificationPublisher.publish(new NotifyConsultant(ticketCreated.ticketId(), consultant.id()));
         ticketAssignmentPublisher.publish(TicketAssigned.createdFrom(ticketCreated.ticketId(), consultant.id()));

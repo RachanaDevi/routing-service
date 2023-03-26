@@ -3,9 +3,11 @@ CREATE TABLE consultants
 (
     id             serial PRIMARY KEY,
     name           VARCHAR(255),
-    specialization VARCHAR(255),
+    specialization_id serial,
     place          VARCHAR(255)
 );
+-- specializationId is same productCategoryId (in a way foreign key constraint),
+-- how do you maintain that consistency of naming?
 
 CREATE TABLE consultants_availability
 (
