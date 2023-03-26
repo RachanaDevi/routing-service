@@ -1,3 +1,4 @@
+CREATE DATABASE consultant;
 CREATE TABLE consultants
 (
     id             serial PRIMARY KEY,

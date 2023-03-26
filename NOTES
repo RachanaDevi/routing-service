@@ -1,9 +1,11 @@
 Curl command to create ticketCreated
-curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": 1,"concern": "Washing machine","timestamp" : "2023-02-18 01:24:00", "place": "Pune"}'
+curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": 1,"concern": "Washing machine","scheduledTimestamp" : "2023-02-18 01:24:00", "place": "Pune"}'
+curl -X POST http://localhost:8080/submitFeedback -H "Content-Type: application/json" -d '{"ticketId": 3,"text": "Good service","rating" : 9}'
+curl -X POST http://localhost:8080/submitFeedback -H "Content-Type: application/json" -d '{"ticketId": 1,"text": "Good service","rating" : 9}'
 
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticketCreated-created-topic --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-created-topic --from-beginning
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic notification-consultant-topic --from-beginning
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticketCreated-assigned-topic --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic notification-consultant-topic --from-beginning
 
 psql -U postgres
 
@@ -21,7 +23,8 @@ curl -X GET http://localhost:8082/checkingJpa
 
 UPDATE consultants_availability SET available = 't' WHERE consultant_id = 1;
 
-
+https://www.baeldung.com/cs/microervices-db-design#:~:text=It%20means%20that%20we%20can,the%20service%20requirements%20and%20functionality.
+https://www.baeldung.com/transactions-across-microservices
 TODO:
 1. Link the database and the queries all and for once
 2. See if it is able to get the table
