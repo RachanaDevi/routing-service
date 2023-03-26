@@ -8,6 +8,10 @@ import java.util.Objects;
 public class TicketCreated {
 
     private Long ticketId;
+
+    private Long productId;
+
+    private Long productCategoryId;
     private String concern;
     private String scheduledTimestamp;
     private String place;
@@ -27,13 +31,13 @@ public class TicketCreated {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TicketCreated ticketCreated = (TicketCreated) o;
-        return Objects.equals(ticketId, ticketCreated.ticketId) && Objects.equals(concern, ticketCreated.concern) && Objects.equals(scheduledTimestamp, ticketCreated.scheduledTimestamp);
+        TicketCreated that = (TicketCreated) o;
+        return Objects.equals(ticketId, that.ticketId) && Objects.equals(productId, that.productId) && Objects.equals(productCategoryId, that.productCategoryId) && Objects.equals(concern, that.concern) && Objects.equals(scheduledTimestamp, that.scheduledTimestamp) && Objects.equals(place, that.place);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticketId, concern, scheduledTimestamp);
+        return Objects.hash(ticketId, productId, productCategoryId, concern, scheduledTimestamp, place);
     }
 
     public Long ticketId() {
