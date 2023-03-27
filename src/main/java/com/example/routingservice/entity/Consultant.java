@@ -18,8 +18,6 @@ public class Consultant {
 
     private String name;
 
-    private Long specializationId;
-
     private String place;
 
     @ManyToMany
@@ -28,13 +26,18 @@ public class Consultant {
             inverseJoinColumns = @JoinColumn(name = "id"))
     private List<ConsultantAvailability> consultantsAvailabilityList = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "consultants_specializations",
+            joinColumns = @JoinColumn(name = "consultant_id"),
+            inverseJoinColumns = @JoinColumn(name = "id"))
+    private List<ConsultantSpecialization> consultantsSpecializationsList = new ArrayList<>();
+
     public Consultant() {
     }
 
-    public Consultant(Long id, String name, Long specializationId, String place) {
+    public Consultant(Long id, String name, String place) {
         this.id = id;
         this.name = name;
-        this.specializationId = specializationId;
         this.place = place;
     }
 
@@ -52,7 +55,6 @@ public class Consultant {
         return "Consultant{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", specializationId='" + specializationId + '\'' +
                 ", place='" + place + '\'' +
                 '}';
     }
@@ -62,11 +64,11 @@ public class Consultant {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Consultant that = (Consultant) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(specializationId, that.specializationId) && Objects.equals(place, that.place);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(place, that.place);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, specializationId, place);
+        return Objects.hash(id, name, place);
     }
 }

@@ -1,7 +1,12 @@
-INSERT INTO consultants (name, specialization_id, place)
-VALUES ('Tom', 1, 'Pune');
-INSERT INTO consultants (name, specialization_id, place)
-VALUES ('Kate', '2, 'Mumbai');
+INSERT INTO consultants (name, place)
+VALUES ('Tom', 'Pune');
+INSERT INTO consultants (name, place)
+VALUES ('Kate', 'Mumbai');
+
+INSERT INTO consultants_specializations(consultant_id, specialization_id)
+VALUES(1,1);
+INSERT INTO consultants_specializations(consultant_id, specialization_id)
+VALUES(2,2);
 
 
 INSERT INTO consultants_availability (consultant_id, available_from, available_to, available)

@@ -12,10 +12,12 @@ import java.sql.Timestamp;
 
 public interface ConsultantAvailabilityRepository extends JpaRepository<ConsultantAvailability, Long> {
 
-    @Query("SELECT ca FROM Consultant consultant JOIN consultant.consultantsAvailabilityList ca WHERE :date>=ca.availableFrom and :date <=ca.availableTo and ca.available=true and consultant.specializationId = :specializationId order by ca.availableFrom")
+    @Query("SELECT ca FROM Consultant consultant JOIN consultant.consultantsAvailabilityList ca JOIN consultant.consultantsSpecializationsList cs WHERE cs.specializationId = :specializationId and :date>=ca.availableFrom and :date <=ca.availableTo and ca.available=true order by ca.availableFrom")
+//    @Query("SELECT ca FROM Consultant consultant JOIN consultant.consultantsAvailabilityList ca WHERE :date>=ca.availableFrom and :date <=ca.availableTo and ca.available=true and consultant.specializationId = :specializationId order by ca.availableFrom")
     Page<ConsultantAvailability> findAvailableConsultant(Timestamp date, Long specializationId, Pageable pageable);
 
-    @Query("SELECT ca FROM Consultant consultant JOIN consultant.consultantsAvailabilityList ca WHERE :date>=ca.availableFrom and :date <=ca.availableTo and ca.available=true and consultant.specializationId = :specializationId and consultant.place like %:place% order by ca.availableFrom")
+    @Query("SELECT ca FROM Consultant consultant JOIN consultant.consultantsAvailabilityList ca JOIN consultant.consultantsSpecializationsList cs WHERE :date>=ca.availableFrom and :date <=ca.availableTo and ca.available=true and cs.specializationId = :specializationId and consultant.place like %:place% order by ca.availableFrom")
+//    @Query("SELECT ca FROM Consultant consultant JOIN consultant.consultantsAvailabilityList ca WHERE :date>=ca.availableFrom and :date <=ca.availableTo and ca.available=true and consultant.specializationId = :specializationId and consultant.place like %:place% order by ca.availableFrom")
     Page<ConsultantAvailability> findNearestAvailableConsultant(Timestamp date, Long specializationId, String place, Pageable pageable);
 
     @Modifying

@@ -31,7 +31,7 @@ public class ConsultantFixture {
     }
 
     public Consultant build() {
-        return new Consultant(1l, this.name, 1l, this.place);
+        return new Consultant(1l, this.name, this.place);
     }
 
 }
