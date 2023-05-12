@@ -1,6 +1,8 @@
 package com.sysops_squad.routingservice.service;
 
+import com.sysops_squad.routingservice.entity.Consultant;
 import com.sysops_squad.routingservice.entity.ConsultantAvailability;
+import com.sysops_squad.routingservice.exception.ConsultantNotFoundException;
 import com.sysops_squad.routingservice.exception.ConsultantUnavailableException;
 import com.sysops_squad.routingservice.fixture.ConsultantAvailabilityFixture;
 import com.sysops_squad.routingservice.fixture.ConsultantFixture;
@@ -34,6 +36,7 @@ class ConsultantServiceTest {
     @Test
     void shouldThrowConsultantUnavailableException() {
         Optional<ConsultantAvailability> emptyConsultantAvailability = Optional.empty();
+
         ConsultantAvailabilityRepository consultantAvailabilityRepository = mock(ConsultantAvailabilityRepository.class);
         when(consultantAvailabilityRepository.findNearestAvailableConsultant()).thenReturn(emptyConsultantAvailability);
 
@@ -41,5 +44,20 @@ class ConsultantServiceTest {
         ConsultantService consultantService = new ConsultantService(consultantAvailabilityRepository, consultantRepository);
 
         Assertions.assertThatThrownBy(consultantService::findNearestAvailableConsultant).isExactlyInstanceOf(ConsultantUnavailableException.class);
+    }
+
+    @Test
+    void shouldThrowConsultantNotFoundException() {
+        Optional<Consultant> emptyOptionalConsultant = Optional.empty();
+
+        ConsultantRepository consultantRepository = mock(ConsultantRepository.class);
+        when(consultantRepository.findById(any())).thenReturn(emptyOptionalConsultant);
+
+        ConsultantAvailabilityRepository consultantAvailabilityRepository = mock(ConsultantAvailabilityRepository.class);
+        when(consultantAvailabilityRepository.findNearestAvailableConsultant()).thenReturn(Optional.of(ConsultantAvailabilityFixture.anyConsultantAvailability()));
+
+        ConsultantService consultantService = new ConsultantService(consultantAvailabilityRepository, consultantRepository);
+
+        Assertions.assertThatThrownBy(consultantService::findNearestAvailableConsultant).isExactlyInstanceOf(ConsultantNotFoundException.class);
     }
 }

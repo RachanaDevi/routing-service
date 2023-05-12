@@ -2,6 +2,7 @@ package com.sysops_squad.routingservice.service;
 
 import com.sysops_squad.routingservice.entity.Consultant;
 import com.sysops_squad.routingservice.entity.ConsultantAvailability;
+import com.sysops_squad.routingservice.exception.ConsultantNotFoundException;
 import com.sysops_squad.routingservice.exception.ConsultantUnavailableException;
 import com.sysops_squad.routingservice.repository.ConsultantAvailabilityRepository;
 import com.sysops_squad.routingservice.repository.ConsultantRepository;
@@ -19,7 +20,8 @@ public class ConsultantService {
     }
 
     public Consultant findNearestAvailableConsultant() {
-        ConsultantAvailability consultantAvailability = this.consultantAvailabilityRepository.findNearestAvailableConsultant().orElseThrow(ConsultantUnavailableException::new);
-        return consultantRepository.findById(consultantAvailability.consultantId()).get();
+        ConsultantAvailability consultantAvailability = this.consultantAvailabilityRepository.findNearestAvailableConsultant()
+                .orElseThrow(ConsultantUnavailableException::new);
+        return consultantRepository.findById(consultantAvailability.consultantId()).orElseThrow( () -> new ConsultantNotFoundException(consultantAvailability.id()));
     }
 }
