@@ -4,6 +4,7 @@ curl -X POST http://localhost:8080/submitFeedback -H "Content-Type: application/
 curl -X POST http://localhost:8080/submitFeedback -H "Content-Type: application/json" -d '{"ticketId": 1,"text": "Good service","rating" : 9}'
 
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-created-topic --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-assigned-topic --from-beginning
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic notification-consultant-topic --from-beginning
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic notification-consultant-topic --from-beginning
 
