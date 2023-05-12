@@ -20,8 +20,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ConsultantServiceTest {
 
@@ -38,14 +37,8 @@ class ConsultantServiceTest {
         assertThat(consultantService.findNearestAvailableConsultant(anyScheduledTimestamp(), anySpecializationId(), anyPlace())).isEqualTo(ConsultantFixture.anyConsultant());
     }
 
-    private Page<ConsultantAvailability> pagesOfConsultantAvailability() {
-        return new PageImpl<>(List.of(ConsultantAvailabilityFixture.anyConsultantAvailability()), (PageRequest.of(0, 1)), 1);
-    }
-
     @Test
     void shouldThrowConsultantUnavailableException() {
-        Optional<ConsultantAvailability> emptyConsultantAvailability = Optional.empty();
-
         ConsultantAvailabilityRepository consultantAvailabilityRepository = mock(ConsultantAvailabilityRepository.class);
         when(consultantAvailabilityRepository.findNearestAvailableConsultant(any(), any(), any(), any())).thenReturn(Page.empty());
 
@@ -68,6 +61,25 @@ class ConsultantServiceTest {
         ConsultantService consultantService = new ConsultantService(consultantAvailabilityRepository, consultantRepository);
 
         Assertions.assertThatThrownBy(() -> consultantService.findNearestAvailableConsultant(anyScheduledTimestamp(), anySpecializationId(), anyPlace())).isExactlyInstanceOf(ConsultantNotFoundException.class);
+    }
+
+    @Test
+    void shouldUpdateConsultantAvailabilityIfNearestConsultantIsFound() {
+        ConsultantAvailabilityRepository consultantAvailabilityRepository = mock(ConsultantAvailabilityRepository.class);
+        when(consultantAvailabilityRepository.findNearestAvailableConsultant(any(), any(), any(), any())).thenReturn(pagesOfConsultantAvailability());
+
+        ConsultantRepository consultantRepository = mock(ConsultantRepository.class);
+        when(consultantRepository.findById(any())).thenReturn(Optional.of(ConsultantFixture.anyConsultant()));
+
+        ConsultantService consultantService = new ConsultantService(consultantAvailabilityRepository, consultantRepository);
+
+        consultantService.findNearestAvailableConsultant(anyScheduledTimestamp(), anySpecializationId(), anyPlace());
+
+        verify(consultantAvailabilityRepository).updateAsUnavailableConsultant(any());
+    }
+
+    private Page<ConsultantAvailability> pagesOfConsultantAvailability() {
+        return new PageImpl<>(List.of(ConsultantAvailabilityFixture.anyConsultantAvailability()), (PageRequest.of(0, 1)), 1);
     }
 
     private long anySpecializationId() {

@@ -9,9 +9,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.Rollback;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,6 +27,8 @@ class ConsultantAvailabilityRepositoryIntegrationTest {
     @Test
     @Transactional
     void shouldReturnNearestAvailableConsultant() {
+        long consultantAvailabilityId = 2L;
+
         Page<ConsultantAvailability> nearestAvailableConsultant = consultantAvailabilityRepository
                 .findNearestAvailableConsultant(anyScheduledTimestamp(), anySpecializationId(), anyPlace(), pagesOfConsultantAvailability());
 
@@ -32,11 +36,27 @@ class ConsultantAvailabilityRepositoryIntegrationTest {
         assertThat(nearestAvailableConsultant.get().toList()).usingRecursiveComparison()
                 .ignoringFields("availableConsultants")
                 .isEqualTo(List.of(
-                        new ConsultantAvailability(2L, 1L,
+                        new ConsultantAvailability(consultantAvailabilityId, 1L,
                                 Timestamp.valueOf("2023-02-11 00:00:00.0"),
                                 Timestamp.valueOf("2023-02-22 01:24:23.0"),
                                 true)));
+    }
 
+    @Test
+    @Transactional
+    @Rollback
+    void shouldUpdateConsultantAvailabilityAsFalse() {
+        ConsultantAvailability consultantAvailability = consultantAvailabilityRepository.save(new ConsultantAvailability(1L,
+                Timestamp.valueOf("2023-02-11 00:00:00.0"),
+                Timestamp.valueOf("2023-02-22 01:24:23.0"),
+                true));
+
+        consultantAvailabilityRepository
+                .updateAsUnavailableConsultant(consultantAvailability.id());
+
+        Optional<ConsultantAvailability> consultantAvailabilityOptional = consultantAvailabilityRepository.findById(consultantAvailability.id());
+
+        assertThat(consultantAvailabilityOptional.get().available()).isFalse();
     }
 
     private long anySpecializationId() {

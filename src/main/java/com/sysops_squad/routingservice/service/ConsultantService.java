@@ -28,6 +28,8 @@ public class ConsultantService {
     public Consultant findNearestAvailableConsultant(Timestamp scheduledTimestamp, Long specializationId, String place) {
         Page<ConsultantAvailability> consultantAvailability = this.consultantAvailabilityRepository.findNearestAvailableConsultant(scheduledTimestamp, specializationId, place, Pageable.ofSize(1));
         if (consultantAvailability.get().findFirst().isPresent()) {
+            long id = consultantAvailability.get().findFirst().get().id();
+            consultantAvailabilityRepository.updateAsUnavailableConsultant(id);
             long consultantId = consultantAvailability.get().findFirst().get().consultantId();
             return consultantRepository.findById(consultantId).orElseThrow(() -> new ConsultantNotFoundException(consultantId));
         }

@@ -31,6 +31,13 @@ public class ConsultantAvailability {
     public ConsultantAvailability() {
     }
 
+    public ConsultantAvailability(long consultantId, Timestamp availableFrom, Timestamp availableTo, Boolean available) {
+        this.consultantId = consultantId;
+        this.availableFrom = availableFrom;
+        this.availableTo = availableTo;
+        this.available = available;
+    }
+
     public ConsultantAvailability(long id, long consultantId, Timestamp availableFrom, Timestamp availableTo, Boolean available) {
         this.id = id;
         this.consultantId = consultantId;
@@ -58,5 +65,9 @@ public class ConsultantAvailability {
     @Override
     public int hashCode() {
         return Objects.hash(id, consultantId, availableFrom, availableTo, available);
+    }
+
+    public Boolean available() {
+        return available;
     }
 }
