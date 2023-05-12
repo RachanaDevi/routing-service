@@ -2,7 +2,7 @@ package com.sysops_squad.routingservice.exception;
 
 public class ConsultantUnavailableException extends RuntimeException {
 
-    public ConsultantUnavailableException() {
-        super(String.format("Could not find assigned consultant available"));
+    public ConsultantUnavailableException(String timestamp, Long specializationId, String place) {
+        super(String.format("Could not find assigned consultant available at {%s} having specializationId {%s} and from place {%s}", timestamp, specializationId, place));
     }
 }

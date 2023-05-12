@@ -23,14 +23,14 @@ class ConsultantServiceTest {
     @Test
     void shouldFindNearestAvailableConsultant() {
         ConsultantAvailabilityRepository consultantAvailabilityRepository = mock(ConsultantAvailabilityRepository.class);
-        when(consultantAvailabilityRepository.findNearestAvailableConsultant()).thenReturn(Optional.of(ConsultantAvailabilityFixture.anyConsultantAvailability()));
+        when(consultantAvailabilityRepository.findNearestAvailableConsultant(any(), any(), any())).thenReturn(Optional.of(ConsultantAvailabilityFixture.anyConsultantAvailability()));
 
         ConsultantRepository consultantRepository = mock(ConsultantRepository.class);
         when(consultantRepository.findById(any())).thenReturn(Optional.of(ConsultantFixture.anyConsultant()));
 
         ConsultantService consultantService = new ConsultantService(consultantAvailabilityRepository, consultantRepository);
 
-        assertThat(consultantService.findNearestAvailableConsultant()).isEqualTo(ConsultantFixture.anyConsultant());
+        assertThat(consultantService.findNearestAvailableConsultant(anyScheduledTimestamp(), anySpecializationId(), anyPlace())).isEqualTo(ConsultantFixture.anyConsultant());
     }
 
     @Test
@@ -38,12 +38,12 @@ class ConsultantServiceTest {
         Optional<ConsultantAvailability> emptyConsultantAvailability = Optional.empty();
 
         ConsultantAvailabilityRepository consultantAvailabilityRepository = mock(ConsultantAvailabilityRepository.class);
-        when(consultantAvailabilityRepository.findNearestAvailableConsultant()).thenReturn(emptyConsultantAvailability);
+        when(consultantAvailabilityRepository.findNearestAvailableConsultant(any(), any(), any())).thenReturn(emptyConsultantAvailability);
 
         ConsultantRepository consultantRepository = mock(ConsultantRepository.class);
         ConsultantService consultantService = new ConsultantService(consultantAvailabilityRepository, consultantRepository);
 
-        Assertions.assertThatThrownBy(consultantService::findNearestAvailableConsultant).isExactlyInstanceOf(ConsultantUnavailableException.class);
+        Assertions.assertThatThrownBy(() -> consultantService.findNearestAvailableConsultant(anyScheduledTimestamp(), anySpecializationId(), anyPlace())).isExactlyInstanceOf(ConsultantUnavailableException.class);
     }
 
     @Test
@@ -54,10 +54,22 @@ class ConsultantServiceTest {
         when(consultantRepository.findById(any())).thenReturn(emptyOptionalConsultant);
 
         ConsultantAvailabilityRepository consultantAvailabilityRepository = mock(ConsultantAvailabilityRepository.class);
-        when(consultantAvailabilityRepository.findNearestAvailableConsultant()).thenReturn(Optional.of(ConsultantAvailabilityFixture.anyConsultantAvailability()));
+        when(consultantAvailabilityRepository.findNearestAvailableConsultant(any(), any(), any())).thenReturn(Optional.of(ConsultantAvailabilityFixture.anyConsultantAvailability()));
 
         ConsultantService consultantService = new ConsultantService(consultantAvailabilityRepository, consultantRepository);
 
-        Assertions.assertThatThrownBy(consultantService::findNearestAvailableConsultant).isExactlyInstanceOf(ConsultantNotFoundException.class);
+        Assertions.assertThatThrownBy(() -> consultantService.findNearestAvailableConsultant(anyScheduledTimestamp(), anySpecializationId(), anyPlace())).isExactlyInstanceOf(ConsultantNotFoundException.class);
+    }
+
+    private long anySpecializationId() {
+        return 1L;
+    }
+
+    private String anyPlace() {
+        return "Pune";
+    }
+
+    private String anyScheduledTimestamp() {
+        return "2023-02-18 01:24:00";
     }
 }

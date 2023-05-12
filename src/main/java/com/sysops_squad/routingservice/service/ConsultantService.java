@@ -19,9 +19,9 @@ public class ConsultantService {
         this.consultantRepository = consultantRepository;
     }
 
-    public Consultant findNearestAvailableConsultant() {
-        ConsultantAvailability consultantAvailability = this.consultantAvailabilityRepository.findNearestAvailableConsultant()
-                .orElseThrow(ConsultantUnavailableException::new);
-        return consultantRepository.findById(consultantAvailability.consultantId()).orElseThrow( () -> new ConsultantNotFoundException(consultantAvailability.id()));
+    public Consultant findNearestAvailableConsultant(String scheduledTimestamp, Long specializationId, String place) {
+        ConsultantAvailability consultantAvailability = this.consultantAvailabilityRepository.findNearestAvailableConsultant(scheduledTimestamp, specializationId, place)
+                .orElseThrow(() -> new ConsultantUnavailableException(scheduledTimestamp, specializationId, place));
+        return consultantRepository.findById(consultantAvailability.consultantId()).orElseThrow(() -> new ConsultantNotFoundException(consultantAvailability.id()));
     }
 }
