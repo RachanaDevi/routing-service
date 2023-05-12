@@ -2,6 +2,7 @@ package com.sysops_squad.routingservice.service;
 
 import com.sysops_squad.routingservice.entity.Consultant;
 import com.sysops_squad.routingservice.entity.ConsultantAvailability;
+import com.sysops_squad.routingservice.exception.ConsultantUnavailableException;
 import com.sysops_squad.routingservice.repository.ConsultantAvailabilityRepository;
 import com.sysops_squad.routingservice.repository.ConsultantRepository;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class ConsultantService {
     }
 
     public Consultant findNearestAvailableConsultant() {
-        ConsultantAvailability consultantAvailability = this.consultantAvailabilityRepository.findNearestAvailableConsultant().get();
+        ConsultantAvailability consultantAvailability = this.consultantAvailabilityRepository.findNearestAvailableConsultant().orElseThrow(ConsultantUnavailableException::new);
         return consultantRepository.findById(consultantAvailability.consultantId()).get();
     }
 }

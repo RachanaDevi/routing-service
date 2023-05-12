@@ -1,9 +1,12 @@
 package com.sysops_squad.routingservice.service;
 
+import com.sysops_squad.routingservice.entity.ConsultantAvailability;
+import com.sysops_squad.routingservice.exception.ConsultantUnavailableException;
 import com.sysops_squad.routingservice.fixture.ConsultantAvailabilityFixture;
 import com.sysops_squad.routingservice.fixture.ConsultantFixture;
 import com.sysops_squad.routingservice.repository.ConsultantAvailabilityRepository;
 import com.sysops_squad.routingservice.repository.ConsultantRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -26,5 +29,17 @@ class ConsultantServiceTest {
         ConsultantService consultantService = new ConsultantService(consultantAvailabilityRepository, consultantRepository);
 
         assertThat(consultantService.findNearestAvailableConsultant()).isEqualTo(ConsultantFixture.anyConsultant());
+    }
+
+    @Test
+    void shouldThrowConsultantUnavailableException() {
+        Optional<ConsultantAvailability> emptyConsultantAvailability = Optional.empty();
+        ConsultantAvailabilityRepository consultantAvailabilityRepository = mock(ConsultantAvailabilityRepository.class);
+        when(consultantAvailabilityRepository.findNearestAvailableConsultant()).thenReturn(emptyConsultantAvailability);
+
+        ConsultantRepository consultantRepository = mock(ConsultantRepository.class);
+        ConsultantService consultantService = new ConsultantService(consultantAvailabilityRepository, consultantRepository);
+
+        Assertions.assertThatThrownBy(consultantService::findNearestAvailableConsultant).isExactlyInstanceOf(ConsultantUnavailableException.class);
     }
 }
