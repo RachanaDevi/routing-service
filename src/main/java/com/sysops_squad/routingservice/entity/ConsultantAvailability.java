@@ -3,6 +3,9 @@ package com.sysops_squad.routingservice.entity;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "consultants_availability")
@@ -22,6 +25,9 @@ public class ConsultantAvailability {
 
     private Boolean available;
 
+    @ManyToMany(mappedBy = "consultantsAvailabilityList", fetch = FetchType.EAGER)
+    private List<Consultant> availableConsultants = new ArrayList<>();
+
     public ConsultantAvailability() {
     }
 
@@ -39,5 +45,18 @@ public class ConsultantAvailability {
 
     public long consultantId() {
         return consultantId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ConsultantAvailability that = (ConsultantAvailability) o;
+        return id == that.id && consultantId == that.consultantId && Objects.equals(availableFrom, that.availableFrom) && Objects.equals(availableTo, that.availableTo) && Objects.equals(available, that.available);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, consultantId, availableFrom, availableTo, available);
     }
 }

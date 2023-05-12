@@ -4,6 +4,8 @@ import com.sysops_squad.routingservice.entity.Consultant;
 import com.sysops_squad.routingservice.event.TicketCreated;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 @Service
 public class RoutingService {
 
@@ -14,6 +16,6 @@ public class RoutingService {
     }
 
     public Consultant assignedConsultant(TicketCreated ticketCreated) {
-        return this.consultantService.findNearestAvailableConsultant(ticketCreated.scheduledTimestamp(),ticketCreated.productCategoryId(), ticketCreated.place());
+        return this.consultantService.findNearestAvailableConsultant(Timestamp.valueOf(ticketCreated.scheduledTimestamp()),ticketCreated.productCategoryId(), ticketCreated.place());
     }
 }

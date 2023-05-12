@@ -10,5 +10,4 @@ public class ConsultantAvailabilityFixture {
         return new ConsultantAvailability(1L, 1L, Timestamp.valueOf("2023-02-10 01:24:00"), Timestamp.valueOf("2023-02-21 01:24:00"), true);
     }
 
-
 }

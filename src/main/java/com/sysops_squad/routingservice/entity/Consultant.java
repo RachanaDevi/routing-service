@@ -3,6 +3,8 @@ package com.sysops_squad.routingservice.entity;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -11,7 +13,7 @@ import java.util.Objects;
 public class Consultant {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -27,22 +29,29 @@ public class Consultant {
         this.place = place;
     }
 
+    public Consultant(String name, String place) {
+        this.name = name;
+        this.place = place;
+    }
+
     public static Consultant noConsultant() {
         return null;
     }
 
+    @ManyToMany
+    @JoinTable(name = "consultants_availability",
+            joinColumns = @JoinColumn(name = "consultant_id"),
+            inverseJoinColumns = @JoinColumn(name = "id"))
+    private List<ConsultantAvailability> consultantsAvailabilityList = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "consultants_specializations",
+            joinColumns = @JoinColumn(name = "consultant_id"),
+            inverseJoinColumns = @JoinColumn(name = "id"))
+    private List<ConsultantSpecialization> consultantsSpecializationsList = new ArrayList<>();
 
     public Long id() {
         return id;
-    }
-
-    @Override
-    public String toString() {
-        return "Consultant{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", place='" + place + '\'' +
-                '}';
     }
 
     @Override
