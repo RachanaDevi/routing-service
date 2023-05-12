@@ -5,6 +5,7 @@ import com.sysops_squad.routingservice.entity.Consultant;
 import com.sysops_squad.routingservice.event.TicketAssigned;
 import com.sysops_squad.routingservice.event.TicketCreated;
 import com.sysops_squad.routingservice.producer.TicketPublisher;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class RoutingService {
 
     private final TicketPublisher ticketAssignmentPublisher;
 
+    @Autowired
     public RoutingService(ConsultantService consultantService, TicketPublisher ticketAssignmentPublisher) {
         this.consultantService = consultantService;
         this.ticketAssignmentPublisher = ticketAssignmentPublisher;
