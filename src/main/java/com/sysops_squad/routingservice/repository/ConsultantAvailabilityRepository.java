@@ -17,9 +17,11 @@ public interface ConsultantAvailabilityRepository extends JpaRepository<Consulta
     @Query("SELECT ca FROM Consultant consultant JOIN consultant.consultantsAvailabilityList ca JOIN consultant.consultantsSpecializationsList cs WHERE :scheduledTimestamp>=ca.availableFrom and :scheduledTimestamp <=ca.availableTo and ca.available=true and cs.specializationId = :specializationId and consultant.place like %:place% order by ca.availableFrom")
     Page<ConsultantAvailability> findNearestAvailableConsultant(Timestamp scheduledTimestamp, Long specializationId, String place, Pageable pageable);
 
-
     @Modifying(clearAutomatically = true)
     @Query("UPDATE ConsultantAvailability ca SET ca.available = false WHERE ca.id=:id")
     @Transactional
     void updateAsUnavailableConsultant(Long id);
+
+    @Query("SELECT ca FROM Consultant consultant JOIN consultant.consultantsAvailabilityList ca JOIN consultant.consultantsSpecializationsList cs WHERE cs.specializationId = :specializationId and :scheduledTimestamp>=ca.availableFrom and :scheduledTimestamp <=ca.availableTo and ca.available=true order by ca.availableFrom")
+    Page<ConsultantAvailability> findAvailableConsultant(Timestamp scheduledTimestamp, Long specializationId, Pageable pageable);
 }

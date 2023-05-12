@@ -44,6 +44,24 @@ class ConsultantAvailabilityRepositoryIntegrationTest {
 
     @Test
     @Transactional
+    void shouldReturnAvailableConsultant() {
+        long consultantAvailabilityId = 2L;
+
+        Page<ConsultantAvailability> nearestAvailableConsultant = consultantAvailabilityRepository
+                .findAvailableConsultant(anyScheduledTimestamp(), anySpecializationId(), pagesOfConsultantAvailability());
+
+        assertThat(nearestAvailableConsultant.getTotalPages()).isEqualTo(2);
+        assertThat(nearestAvailableConsultant.get().toList()).usingRecursiveComparison()
+                .ignoringFields("availableConsultants")
+                .isEqualTo(List.of(
+                        new ConsultantAvailability(consultantAvailabilityId, 1L,
+                                Timestamp.valueOf("2023-02-11 00:00:00.0"),
+                                Timestamp.valueOf("2023-02-22 01:24:23.0"),
+                                true)));
+    }
+
+    @Test
+    @Transactional
     @Rollback
     void shouldUpdateConsultantAvailabilityAsFalse() {
         ConsultantAvailability consultantAvailability = consultantAvailabilityRepository.save(new ConsultantAvailability(1L,

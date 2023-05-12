@@ -33,6 +33,19 @@ public class ConsultantService {
             long consultantId = consultantAvailability.get().findFirst().get().consultantId();
             return consultantRepository.findById(consultantId).orElseThrow(() -> new ConsultantNotFoundException(consultantId));
         }
+        return findAvailableConsultant(scheduledTimestamp, specializationId, place);
+    }
+
+    private Consultant findAvailableConsultant(Timestamp scheduledTimestamp, Long specializationId, String place) {
+        Page<ConsultantAvailability> availableConsultant = consultantAvailabilityRepository.findAvailableConsultant(scheduledTimestamp, specializationId, Pageable.ofSize(1));
+        if (availableConsultant.get().findFirst().isPresent()) {
+            consultantAvailabilityRepository.updateAsUnavailableConsultant(availableConsultant.get().findFirst().get().id());
+            long id = availableConsultant.get()
+                    .findFirst()
+                    .get().consultantId();
+            return consultantRepository.findById(id)
+                    .orElseThrow(() -> new ConsultantNotFoundException(id));
+        }
         throw new ConsultantUnavailableException(String.valueOf(scheduledTimestamp), specializationId, place);
     }
 }

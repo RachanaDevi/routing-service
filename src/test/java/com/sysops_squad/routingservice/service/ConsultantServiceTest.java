@@ -41,6 +41,7 @@ class ConsultantServiceTest {
     void shouldThrowConsultantUnavailableException() {
         ConsultantAvailabilityRepository consultantAvailabilityRepository = mock(ConsultantAvailabilityRepository.class);
         when(consultantAvailabilityRepository.findNearestAvailableConsultant(any(), any(), any(), any())).thenReturn(Page.empty());
+        when(consultantAvailabilityRepository.findAvailableConsultant(any(), any(), any())).thenReturn(Page.empty());
 
         ConsultantRepository consultantRepository = mock(ConsultantRepository.class);
         ConsultantService consultantService = new ConsultantService(consultantAvailabilityRepository, consultantRepository);
@@ -57,6 +58,42 @@ class ConsultantServiceTest {
 
         ConsultantAvailabilityRepository consultantAvailabilityRepository = mock(ConsultantAvailabilityRepository.class);
         when(consultantAvailabilityRepository.findNearestAvailableConsultant(any(), any(), any(), any())).thenReturn(pagesOfConsultantAvailability());
+
+        ConsultantService consultantService = new ConsultantService(consultantAvailabilityRepository, consultantRepository);
+
+        Assertions.assertThatThrownBy(() -> consultantService.findNearestAvailableConsultant(anyScheduledTimestamp(), anySpecializationId(), anyPlace())).isExactlyInstanceOf(ConsultantNotFoundException.class);
+    }
+
+    @Test
+    void shouldReturnAvailableConsultantIfNearestConsultantIsNotFound() {
+        Page<ConsultantAvailability> nearestAvailableConsultantNotFound = Page.empty();
+        Page<ConsultantAvailability> availableConsultant = pagesOfConsultantAvailability();
+
+        ConsultantAvailabilityRepository consultantAvailabilityRepository = mock(ConsultantAvailabilityRepository.class);
+        when(consultantAvailabilityRepository.findNearestAvailableConsultant(any(), any(), any(), any())).thenReturn(nearestAvailableConsultantNotFound);
+        when(consultantAvailabilityRepository.findAvailableConsultant(any(), any(), any())).thenReturn(availableConsultant);
+
+        ConsultantRepository consultantRepository = mock(ConsultantRepository.class);
+        when(consultantRepository.findById(any())).thenReturn(Optional.of(ConsultantFixture.anyConsultant()));
+
+        ConsultantService consultantService = new ConsultantService(consultantAvailabilityRepository, consultantRepository);
+        consultantService.findNearestAvailableConsultant(anyScheduledTimestamp(), anySpecializationId(), anyPlace());
+
+        verify(consultantAvailabilityRepository).findAvailableConsultant(any(), any(), any());
+    }
+
+    @Test
+    void shouldThrowConsultantNotFoundExceptionIfNearestNorAvailableConsultantFound() {
+        Page<ConsultantAvailability> consultantAvailabilityNotFound = Page.empty();
+        Optional<Consultant> emptyOptionalConsultant = Optional.empty();
+        Page<ConsultantAvailability> availableConsultant = pagesOfConsultantAvailability();
+
+        ConsultantRepository consultantRepository = mock(ConsultantRepository.class);
+        when(consultantRepository.findById(any())).thenReturn(emptyOptionalConsultant);
+
+        ConsultantAvailabilityRepository consultantAvailabilityRepository = mock(ConsultantAvailabilityRepository.class);
+        when(consultantAvailabilityRepository.findNearestAvailableConsultant(any(), any(), any(), any())).thenReturn(consultantAvailabilityNotFound);
+        when(consultantAvailabilityRepository.findAvailableConsultant(any(), any(), any())).thenReturn(availableConsultant);
 
         ConsultantService consultantService = new ConsultantService(consultantAvailabilityRepository, consultantRepository);
 
