@@ -1,14 +1,16 @@
-#server.port: 8082
-#spring:
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/consultant
-#    username: postgres
-#    password: postgres
-#  jpa:
-#    properties:
-#      hibernate:
-#        ddl-auto: create
-#        dialect: org.hibernate.dialect.PostgreSQLDialect
-#        jdbc:
-#          lob:
-#            non_contextual_creation: true
+server.port: 8082
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+  datasource:
+    url: jdbc:postgresql://localhost:5432/consultant
+    username: postgres
+    password: postgres
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: create
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
