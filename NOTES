@@ -52,3 +52,7 @@ ticketCreated routing and then the routing
 - created fire it that consultant
 4. How to make sure a consultant is available in real time?
    - For now we are assuming that the data is correct and the data is up to date.
+5. How do you want to handle if a consultant is not available?
+  - if it's not available you tell them to try again
+  - but you don't necessarily stop it
+  - but how do you send it back as a response?
